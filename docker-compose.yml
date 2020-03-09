@@ -1,0 +1,49 @@
+version: '3'
+services:
+  proxy:
+    container_name: m-proxy
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - laravel
+      
+  my-laravel:
+    container_name: m-laravel
+    build: .
+    image: custom-laravel
+    volumes:
+      - ./laravel-project:/root/laravel-project
+    networks:
+      - laravel
+    command: ["/bin/bash", "entrypoint"]
+
+
+  my-mariadb:
+    container_name: m-mariadb
+    build: ./mariadb
+    image: custom-mariadb
+
+    environment:
+      - TZ=Asia/Seoul
+
+      - MYSQL_ROOT_PASSWROD=secret
+      - MYSQL_DATABASE=LARAVELDB
+      - MYSQL_USER=laravel
+      - MYSQL_PASSWORD=secret
+
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+
+    #volumes:
+      #- ./mysql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./mysql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    networks:
+      - laravel
+
+networks:
+  laravel:
+    external: true
