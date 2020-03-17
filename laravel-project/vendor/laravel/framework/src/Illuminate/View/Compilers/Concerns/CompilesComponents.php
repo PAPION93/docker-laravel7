@@ -61,7 +61,7 @@ trait CompilesComponents
     {
         return implode(PHP_EOL, [
             '<?php if (isset($component)) { $__componentOriginal'.$hash.' = $component; } ?>',
-            '<?php $component = app()->make('.Str::finish($component, '::class').', '.($data ?: '[]').'); ?>',
+            '<?php $component = $__env->getContainer()->make('.Str::finish($component, '::class').', '.($data ?: '[]').'); ?>',
             '<?php if ($component->shouldRender()): ?>',
             '<?php $__env->startComponent($component->resolveView(), $component->data()); ?>',
         ]);
@@ -153,5 +153,19 @@ trait CompilesComponents
     if (array_key_exists(\$__key, \$__defined_vars)) unset(\$\$__key);
 } ?>
 <?php unset(\$__defined_vars); ?>";
+    }
+
+    /**
+     * Sanitize the given component attribute value.
+     *
+     * @param  mixed  $value
+     * @return mixed
+     */
+    public static function sanitizeComponentAttribute($value)
+    {
+        return is_string($value) ||
+               (is_object($value) && method_exists($value, '__toString'))
+                        ? e($value)
+                        : $value;
     }
 }

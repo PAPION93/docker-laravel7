@@ -4,8 +4,8 @@ namespace Illuminate\Bus;
 
 use Closure;
 use Illuminate\Queue\CallQueuedClosure;
-use Illuminate\Queue\SerializableClosure;
 use Illuminate\Support\Arr;
+use RuntimeException;
 
 trait Queueable
 {
@@ -145,14 +145,32 @@ trait Queueable
     public function chain($chain)
     {
         $this->chained = collect($chain)->map(function ($job) {
-            return serialize(
-                $job instanceof Closure
-                            ? new CallQueuedClosure(new SerializableClosure($job))
-                            : $job
-            );
+            return $this->serializeJob($job);
         })->all();
 
         return $this;
+    }
+
+    /**
+     * Serialize a job for queuing.
+     *
+     * @param mixed $job
+     *
+     * @return string
+     */
+    protected function serializeJob($job)
+    {
+        if ($job instanceof Closure) {
+            if (! class_exists(CallQueuedClosure::class)) {
+                throw new RuntimeException(
+                    'To enable support for closure jobs, please install illuminate/queue.'
+                );
+            }
+
+            $job = CallQueuedClosure::create($job);
+        }
+
+        return serialize($job);
     }
 
     /**

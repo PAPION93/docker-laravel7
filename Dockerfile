@@ -20,17 +20,25 @@ RUN export PATH=$PATH:~/.composer/vendor/bin/
 # step 4
 # PHP Extension Install
 RUN docker-php-ext-install zip
-#RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install tokenizer
+RUN docker-php-ext-install xml
+RUN docker-php-ext-install ctype
+RUN docker-php-ext-install fileinfo
+RUN docker-php-ext-install json
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install pdo
 RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install fileinfo
 
 # step 5
-# Laravel Install
+# download the Laravel installer using Composer
 RUN composer global require laravel/installer
 
 # step 6
 # Bind Port
 EXPOSE 81
 CMD ["php-fpm"]
+
+# RUN mkdir laravel-project
+# WORKDIR /root/laravel-project

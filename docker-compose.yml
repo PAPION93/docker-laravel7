@@ -9,7 +9,7 @@ services:
       - ./proxy/nginx.conf:/etc/nginx/nginx.conf
     networks:
       - laravel
-      
+
   my-laravel:
     container_name: m-laravel
     build: .
@@ -19,7 +19,6 @@ services:
     networks:
       - laravel
     command: ["/bin/bash", "entrypoint"]
-
 
   my-mariadb:
     container_name: m-mariadb
@@ -38,7 +37,7 @@ services:
 
     #volumes:
       #- ./mysql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
-      - ./mysql:/docker-entrypoint-initdb.d
+      # - ./mysql:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
     networks:
