@@ -11,18 +11,6 @@ services:
       laravel:
         ipv4_address: 172.40.0.2
 
-
-  my-laravel:
-    container_name: m-laravel
-    build: .
-    image: custom-laravel
-    volumes:
-      - ./laravel-project:/root/laravel-project
-    networks:
-      laravel:
-        ipv4_address: 172.40.0.3
-#    command: ["/bin/bash", "entrypoint"]
-
   my-mariadb:
     container_name: m-mariadb
     build: ./mariadb
@@ -34,12 +22,26 @@ services:
       - MYSQL_USER=laravel
       - MYSQL_PASSWORD=secret
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
-
     ports:
       - "3306:3306"
+    volumes:
+#      - ./mariadb/conf:/etc/mysql
+      - ./mariadb/data:/var/lib/mysql
+#      - ./mariadb/log:/var/log/mysql
     networks:
       laravel:
         ipv4_address: 172.40.0.4
+
+  my-laravel:
+    container_name: m-laravel
+    build: .
+    image: custom-laravel
+    volumes:
+      - ./laravel-project:/root/laravel-project
+    networks:
+      laravel:
+        ipv4_address: 172.40.0.3
+    command: ["/bin/bash", "entrypoint"]
 
 networks:
   laravel:
