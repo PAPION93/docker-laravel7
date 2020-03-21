@@ -22,3 +22,30 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('posts', 'PostsController');
+Route::resource('posts.comments', 'PostCommentController');
+
+Route::get('auth', function () {
+    $credentials = [
+        'email' => 'sjun93@naver.com',
+        'password' => '1q2w3e!!'
+    ];
+
+    if (!Auth::attempt($credentials)) {
+        return 'Incorrect username and password combination';
+    }
+
+    return redirect('protected');
+});
+
+Route::get('auth/logout', function () {
+    Auth::logout();
+
+    return 'See you again~';
+});
+
+Route::get('protected', [
+    'middleware' => 'auth',
+    function () {
+        return 'Welcome back, ' . Auth::user()->name;
+    }
+]);
