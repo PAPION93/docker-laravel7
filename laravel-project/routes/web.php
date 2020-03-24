@@ -24,6 +24,26 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('posts', 'PostsController');
 Route::resource('posts.comments', 'PostCommentController');
 
+Route::get('posts', function() {
+//    $posts = App\Post::get();
+//    $posts = App\Post::with('user')->get();
+
+//    $posts = App\Post::get();
+//    $posts->load('user');
+
+    // paging
+    $posts = App\Post::with('user')->paginate(10);
+
+    return view('posts.index', compact('posts'));
+});
+
+DB::listen(function ($event) {
+    var_dump($event->sql);
+    // var_dump($event->bindings);
+    // var_dump($event->time);
+});
+
+
 Route::get('auth', function () {
     $credentials = [
         'email' => 'sjun93@naver.com',

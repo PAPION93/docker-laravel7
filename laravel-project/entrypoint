@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #composer update
-cp .env.example .env
+#cp .env.example .env
 #php artisan key:generate
-php artisan serve --host 0.0.0.0 --port 81
 php artisan serve --host 0.0.0.0 --port 81
