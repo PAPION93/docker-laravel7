@@ -24,17 +24,25 @@ class PostsController extends Controller
     public function create()
     {
         //
+        return view('posts.create');
+
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, \App\Http\Request\PostsRequest::rules());
+
+        \App\Http\Service\PostsService::business($request);
+
+        $posts = \App\Post::with('user')->paginate(10);
+        return view('posts.index', compact('posts'));
     }
 
     /**
