@@ -39,7 +39,8 @@ class User extends Authenticatable
 
     protected $dates = ['last_login'];
 
-    public function posts() {
+    public function posts()
+    {
         return $this->hasMany('App\Post');
     }
 }

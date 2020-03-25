@@ -41,6 +41,12 @@ class PostsController extends Controller
 
         \App\Http\Service\PostsService::business($request);
 
+        $Post = new \App\Post;
+        $Post->user_id = \Auth::id();
+        $Post->title = $request->title;
+        $Post->body = $request->body;
+        $Post->save();
+
         $posts = \App\Post::with('user')->paginate(10);
         return view('posts.index', compact('posts'));
     }
