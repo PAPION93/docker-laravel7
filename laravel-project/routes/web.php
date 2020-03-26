@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return App\Post::findOrFail(100);
-
+//    return App\Post::findOrFail(100);
     return view('welcome');
 });
 
@@ -30,7 +29,6 @@ Route::resource('posts.comments', 'PostCommentController');
 Route::get('posts', function () {
 //    $posts = App\Post::get();
 //    $posts = App\Post::with('user')->get();
-
 //    $posts = App\Post::get();
 //    $posts->load('user');
 
@@ -75,3 +73,10 @@ Event::listen('user.login', function ($user) {
     var_dump('"user.log" event catched and passed data is:');
     var_dump($user->toArray());
 });*/
+
+
+Route::get('docs/{file?}', function($file = null) {
+    $text = (new App\Document)->get($file);
+
+    return app(ParsedownExtra::class)->text($text);
+});
