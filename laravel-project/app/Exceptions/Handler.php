@@ -29,7 +29,7 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Throwable  $exception
+     * @param \Throwable $exception
      * @return void
      *
      * @throws \Exception
@@ -42,14 +42,20 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Throwable $exception
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Throwable
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+            return response(view('errors.notice', [
+                'title' => 'Page Not Found',
+                'description' => 'Sorry. the page or resource you are trying to view does not exist.'
+            ]), 404);
+        }
         return parent::render($request, $exception);
     }
 }

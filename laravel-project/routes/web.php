@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    return App\Post::findOrFail(100);
+
     return view('welcome');
 });
 
