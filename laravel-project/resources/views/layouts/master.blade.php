@@ -7,10 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <title>Laravel 7 Essential</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <title>Laravel 5 Essential</title>
 
-
+    <link href="/build/css/app.css" rel="stylesheet">
 @yield('style')
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -21,17 +20,17 @@
 </head>
 
 <body>
-@extends('layouts.partial.navigation')
+@include('layouts.partial.navigation')
 
-@extends('layouts.partial.flash_message')
+@include('layouts.partial.flash_message')
 
 <div class="container">
     @yield('content')
 </div>
 
-@extends('layouts.partial.footer')
+@include('layouts.partial.footer')
 
-
+<script src="/build/js/app.js"></script>
 @yield('script')
 </body>
 

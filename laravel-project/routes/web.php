@@ -33,3 +33,5 @@ Route::get('posts', function () {
 
     return view('posts.index', compact('posts'));
 });
+
+Route::resource('articles', 'ArticlesController');

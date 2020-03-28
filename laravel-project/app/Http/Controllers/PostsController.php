@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PostsRequest;
 
 class PostsController extends Controller
 {
@@ -37,7 +38,7 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, \App\Http\Request\PostsRequest::rules());
+        $this->validate($request, \App\Http\Requests\PostsRequest::rules());
 
         \App\Http\Service\PostsService::business($request);
 
