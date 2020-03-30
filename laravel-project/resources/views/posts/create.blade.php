@@ -5,6 +5,7 @@
     <hr/>
     <form action="/posts" method="POST">
         <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="user_id" value="{{ \Auth::id() }}">
 
         <div>
             <label for="title">Title : </label>

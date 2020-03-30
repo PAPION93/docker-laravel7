@@ -17,7 +17,7 @@
 <div class="form-group">
     <div class="checkbox">
         <label>
-            <input type="checkbox" name="notification" checked="{{ $article->notification ?: 'checked' }}">
+            <input type="checkbox" name="notification" checked="{{ $article->notification ?: 'checked' }}" value="1">
             {{ trans('forum.notification') }}
         </label>
     </div>

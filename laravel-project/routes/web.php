@@ -22,17 +22,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-//Route::resource('posts', 'PostsController');
-Route::resource('posts', 'PostsController')->middleware('auth');
+Route::resource('posts', 'PostsController');
+//Route::resource('posts', 'PostsController')->middleware('auth');
 Route::resource('posts.comments', 'PostCommentController');
-
-Route::get('posts', function () {
-//    $posts = App\Post::get();
-//    $posts = App\Post::with('user')->get();
-    // paging
-    $posts = App\Post::with('user')->paginate(10);
-
-    return view('posts.index', compact('posts'));
-});
 
 Route::resource('articles', 'ArticlesController');

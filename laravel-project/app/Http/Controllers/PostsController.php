@@ -14,7 +14,9 @@ class PostsController extends Controller
      */
     public function index()
     {
-        //
+        $posts = \App\Post::with('user')->paginate(10);
+
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -24,9 +26,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
         return view('posts.create');
-
     }
 
     /**
@@ -36,20 +36,12 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(PostsRequest $request)
     {
-        $this->validate($request, \App\Http\Requests\PostsRequest::rules());
+        $post = \App\Post::create($request->all());
+        flash()->success(trans('forum.created'));
 
-        \App\Http\Service\PostsService::business($request);
-
-        $Post = new \App\Post;
-        $Post->user_id = \Auth::id();
-        $Post->title = $request->title;
-        $Post->body = $request->body;
-        $Post->save();
-
-        $posts = \App\Post::with('user')->paginate(10);
-        return view('posts.index', compact('posts'));
+        return redirect(route('posts.index'));
     }
 
     /**

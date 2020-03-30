@@ -12,7 +12,6 @@ class ArticlesController extends Controller
     {
         $this->middleware('auth', ['except' => ['index', 'show']]);
         view()->share('allTags', \App\Tag::with('articles')->get());
-
     }
 
     /**
@@ -48,6 +47,7 @@ class ArticlesController extends Controller
     public function store(ArticlesRequest $request)
     {
         $article = \App\Article::create($request->all());
+
         flash()->success(trans('forum.created'));
 
         return redirect(route('articles.index'));
@@ -75,19 +75,26 @@ class ArticlesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $article = \App\Article::findOrFail($id);
+
+        return view('articles.edit', compact('article'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\ArticlesRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ArticlesRequest $request, $id)
     {
-        //
+        $article = \App\Article::findOrFail($id);
+        $article->update($request->except('_token', '_method'));
+        flash()->success(trans('forum.updated'));
+
+        return redirect(route('articles.index'));
+
     }
 
     /**
@@ -98,6 +105,9 @@ class ArticlesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        \App\Article::findOrFail($id)->delete();
+        flash()->success(trans('forum.deleted'));
+
+        return redirect(route('articles.index'));
     }
 }

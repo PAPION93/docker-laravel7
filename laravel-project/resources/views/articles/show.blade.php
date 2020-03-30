@@ -27,4 +27,18 @@
             </article>
         </div>
     </div>
+    <div class="text-center">
+        <form action="{{ route('articles.destroy', $article->id) }}" method="post">
+            {!! csrf_field() !!}
+            {!! method_field('DELETE') !!}
+            <button type="submit" class="btn btn-danger">
+                {!! icon('delete') !!} Delete
+            </button>
+            <a href="{{route('articles.edit', $article->id)}}" class="btn btn-info">
+                {!! icon('pencil') !!} Edit
+            </a>
+        </form>
+    </div>
+    </article>
+
 @stop
