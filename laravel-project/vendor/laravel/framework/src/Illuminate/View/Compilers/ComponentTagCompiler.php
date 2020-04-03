@@ -59,6 +59,8 @@ class ComponentTagCompiler
      *
      * @param  string  $value
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     public function compileTags(string $value)
     {
@@ -74,6 +76,8 @@ class ComponentTagCompiler
      *
      * @param  string  $value
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     protected function compileOpeningTags(string $value)
     {
@@ -116,6 +120,8 @@ class ComponentTagCompiler
      *
      * @param  string  $value
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     protected function compileSelfClosingTags(string $value)
     {
@@ -159,6 +165,8 @@ class ComponentTagCompiler
      * @param  string  $component
      * @param  array  $attributes
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     protected function componentString(string $component, array $attributes)
     {
@@ -198,16 +206,27 @@ class ComponentTagCompiler
      */
     protected function componentClass(string $component)
     {
+        $viewFactory = Container::getInstance()->make(Factory::class);
+
         if (isset($this->aliases[$component])) {
-            return $this->aliases[$component];
+            if (class_exists($alias = $this->aliases[$component])) {
+                return $alias;
+            }
+
+            if ($viewFactory->exists($alias)) {
+                return $alias;
+            }
+
+            throw new InvalidArgumentException(
+                "Unable to locate class or view [{$alias}] for component [{$component}]."
+            );
         }
 
         if (class_exists($class = $this->guessClassName($component))) {
             return $class;
         }
 
-        if (Container::getInstance()->make(Factory::class)
-                    ->exists($view = "components.{$component}")) {
+        if ($viewFactory->exists($view = "components.{$component}")) {
             return $view;
         }
 
@@ -380,6 +399,9 @@ class ComponentTagCompiler
 
     /**
      * Strip any quotes from the given string.
+     *
+     * @param  string  $value
+     * @return string
      */
     public function stripQuotes(string $value)
     {
