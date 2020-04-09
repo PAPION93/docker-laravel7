@@ -37,7 +37,7 @@ RUN composer global require laravel/installer
 
 # step 6
 # Bind Port
-EXPOSE 81
+EXPOSE 80
 CMD ["php-fpm"]
 
 RUN mkdir laravel-project

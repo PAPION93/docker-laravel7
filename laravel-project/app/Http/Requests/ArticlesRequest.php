@@ -24,7 +24,7 @@ class ArticlesRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'   => 'required',
+            'title'   => 'required|min:11',
             'content' => 'required',
         ];
     }
