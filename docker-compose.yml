@@ -1,26 +1,5 @@
 version: '3.7'
 services:
-  proxy:
-    container_name: m-proxy
-    image: nginx:latest
-    ports:
-      - "80:80"
-    volumes:
-      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
-    networks:
-      laravel:
-        ipv4_address: 172.40.0.2
-
-  my-laravel:
-    container_name: m-laravel
-    build: .
-    image: custom-laravel
-    volumes:
-      - ./laravel-project:/root/laravel-project
-    networks:
-      laravel:
-        ipv4_address: 172.40.0.3
-    command: ["/bin/bash", "entrypoint"]
 
   my-mariadb:
     container_name: m-mariadb
@@ -42,6 +21,28 @@ services:
     networks:
       laravel:
         ipv4_address: 172.40.0.4
+
+  my-laravel:
+    container_name: m-laravel
+    build: .
+    image: custom-laravel
+    volumes:
+      - ./laravel-project:/root/laravel-project
+    networks:
+      laravel:
+        ipv4_address: 172.40.0.3
+    command: ["/bin/bash", "entrypoint"]
+
+  my-nginx:
+    container_name: m-nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      laravel:
+        ipv4_address: 172.40.0.2
 
 networks:
   laravel:
