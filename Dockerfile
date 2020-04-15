@@ -15,7 +15,8 @@ RUN echo "Asia/Seoul" > /etc/timezone
 # Composer Install
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/bin/composer
-RUN export PATH=$PATH:~/.composer/vendor/bin/
+RUN ["/bin/bash", "-c", "echo PATH=$PATH:~/.composer/vendor/bin/ >> ~/.bashrc"]
+RUN ["/bin/bash", "-c", "source ~/.bashrc"]
 
 # step 4
 # PHP Extension Install
@@ -38,6 +39,10 @@ RUN composer global require laravel/installer
 # step 6
 # Bind Port
 EXPOSE 80
+EXPOSE 9000
+EXPOSE 9001
+EXPOSE 9002
+
 CMD ["php-fpm"]
 
 RUN mkdir laravel-project

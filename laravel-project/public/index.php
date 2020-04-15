@@ -58,3 +58,6 @@ $response = $kernel->handle(
 $response->send();
 
 $kernel->terminate($request, $response);
+
+
+var_dump($_SERVER);
