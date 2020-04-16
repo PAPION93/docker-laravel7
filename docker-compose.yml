@@ -20,7 +20,7 @@ services:
       #      - ./mariadb/log:/var/log/mysql
     networks:
       laravel:
-        ipv4_address: 172.40.0.4
+        ipv4_address: 172.40.0.10
 
   my-laravel:
     container_name: m-laravel
@@ -32,20 +32,67 @@ services:
       - ./laravel-project:/root/laravel-project
     networks:
       laravel:
-        ipv4_address: 172.40.0.3
+        ipv4_address: 172.40.0.9
     command: ["/bin/bash", "entrypoint"]
 
-  proxy:
-    container_name: m-proxy
+  my-web1:
+    container_name: m-web1
     image: nginx:latest
     depends_on:
       - my-laravel
     ports:
-      - "80:80"
-      - "82:80"
-      - "443:443"
+      - "8012:8010"
     links:
       - my-laravel
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      laravel:
+        ipv4_address: 172.40.0.5
+
+  my-web2:
+    container_name: m-web2
+    image: nginx:latest
+    depends_on:
+      - my-laravel
+    ports:
+      - "8011:8010"
+    links:
+      - my-laravel
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      laravel:
+        ipv4_address: 172.40.0.4
+
+  my-web3:
+    container_name: m-web3
+    image: nginx:latest
+    depends_on:
+      - my-laravel
+    ports:
+      - "8010:8010"
+    links:
+      - my-laravel
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      laravel:
+        ipv4_address: 172.40.0.3
+
+  proxy:
+    container_name: m-proxy
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - my-web1
+      - my-web2
+      - my-web3
     restart: always
     volumes:
       - ./proxy/nginx.conf:/etc/nginx/nginx.conf

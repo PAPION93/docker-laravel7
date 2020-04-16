@@ -38,10 +38,7 @@ RUN composer global require laravel/installer
 
 # step 6
 # Bind Port
-EXPOSE 80
 EXPOSE 9000
-EXPOSE 9001
-EXPOSE 9002
 
 CMD ["php-fpm"]
 
