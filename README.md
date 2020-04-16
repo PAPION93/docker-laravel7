@@ -1,16 +1,16 @@
 # Docker를 이용한 Laravel 개발환경 구축
+## Docker
 
-### LOCUST를 이용한 도커 부하 테스트
+
+## LOCUST 스트레스 테스트
 [참고 자료](https://bcho.tistory.com/1369)  
 `locust -f .\locustfile.py --port 8080`  
- 
- 
-## Laravel 메모
-### env 환경설정
-APP_DEBUG : 운영환경에서는 false로 시스템정보 노출하지 않아야 한다.
 
-'timezone' => 'Asia/Seoul'  
-'locale' => 'ko'  
+## Laravel
+### env 환경설정
+ - APP_DEBUG : 운영환경에서는 false로 시스템정보 노출하지 않아야 한다.
+ - 'timezone' => 'Asia/Seoul'  
+ - 'locale' => 'ko'  
 
 ### Model 생성
 ```
@@ -26,7 +26,6 @@ $ php artisan make:migration create_authors_table
 $ php artisan make:migration add_name_to_authors_table
 ```
 > 생성 후 database/migrations 디렉토리 하위에 생성된 파일 작업  
-
 
 ### 마이그레이션과 롤백 그리고 초기화
 ```
