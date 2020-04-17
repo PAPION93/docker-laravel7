@@ -1,61 +1,49 @@
-version: '3.7'
+version: "3.7"
 
 services:
-  db:
-    container_name: db
-    build: ./mariadb
-    image: custom-mariadb
-    restart: always
-    environment:
-      - TZ=Asia/Seoul
-      - MYSQL_ROOT_PASSWROD=secret
-      - MYSQL_DATABASE=LARAVELDB
-      - MYSQL_USER=laravel
-      - MYSQL_PASSWORD=secret
-    ports:
-      #- HOST MACHINE PORT : CONTAINER PORT
-      - 3306:3306
-    volumes:
-      - ./mariadb/data:/var/lib/mysql
-      #- ./mariadb/conf:/etc/mysql
-      #- ./mariadb/log:/var/log/mysql
-    networks:
-      - laravel
+    db:
+        container_name: db
+        build: ./mariadb
+        image: custom-mariadb
+        restart: always
+        environment:
+            - TZ=Asia/Seoul
+            - MYSQL_ROOT_PASSWROD=secret
+            - MYSQL_DATABASE=LARAVELDB
+            - MYSQL_USER=laravel
+            - MYSQL_PASSWORD=secret
+        ports:
+            - 3306:3306
+        volumes:
+            - ./mariadb/data:/var/lib/mysql
+            #- ./mariadb/conf:/etc/mysql
+            #- ./mariadb/log:/var/log/mysql
+        networks:
+            - laravel
 
-        #  whoami:
-        #    #container_name: whoami
-        #    image: whoami
-        #    networks:
-        #      - laravel
+    laravel:
+        # container_name: app
+        build: .
+        image: custom-laravel
+        restart: always
+        volumes:
+            - ./laravel-project:/var/www/html
+        networks:
+            - laravel
 
-  laravel:
-    # container_name: app
-    #build: .
-    #image: custom-laravel
-    image: bitnami/php-fpm:latest
-    tty: true
-    restart: always
-    volumes:
-      - ./laravel-project:/var/www/html
-    ports:
-      - 9000:9000
-    networks:
-      - laravel
-    #command: ["php-fpm"]
+    nginx:
+        container_name: proxy
+        image: nginx:latest
+        ports:
+            - 80:80
+            - 443:443
+        restart: always
+        volumes:
+            - ./laravel-project:/var/www/html
+            - ./proxy/single.conf:/etc/nginx/nginx.conf
+        networks:
+            - laravel
 
-  nginx:
-    container_name: proxy
-    image: nginx:latest
-    ports:
-      #- HOST MACHINE PORT : CONTAINER PORT
-      - 81:80
-      - 443:443
-    restart: always
-    volumes:
-      - ./proxy/single.conf:/etc/nginx/nginx.conf
-    networks:
-      - laravel
-  
 networks:
-  laravel:
-    external: true
+    laravel:
+        external: true
