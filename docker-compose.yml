@@ -1,8 +1,8 @@
 version: '3.7'
-services:
 
-  my-mariadb:
-    container_name: m-mariadb
+services:
+  db:
+    container_name: db
     build: ./mariadb
     image: custom-mariadb
     restart: always
@@ -13,92 +13,48 @@ services:
       - MYSQL_USER=laravel
       - MYSQL_PASSWORD=secret
     ports:
-      - "3306:3306"
+      #- HOST MACHINE PORT : CONTAINER PORT
+      - 3306:3306
     volumes:
       - ./mariadb/data:/var/lib/mysql
-      #      - ./mariadb/conf:/etc/mysql
-      #      - ./mariadb/log:/var/log/mysql
+      #- ./mariadb/conf:/etc/mysql
+      #- ./mariadb/log:/var/log/mysql
     networks:
-      laravel:
-        ipv4_address: 172.40.0.10
+      - laravel
 
-  my-laravel:
-    container_name: m-laravel
-    build: .
-    image: custom-laravel
-    depends_on:
-      - my-mariadb
-    volumes:
-      - ./laravel-project:/root/laravel-project
-    networks:
-      laravel:
-        ipv4_address: 172.40.0.9
-    command: ["/bin/bash", "entrypoint"]
+        #  whoami:
+        #    #container_name: whoami
+        #    image: whoami
+        #    networks:
+        #      - laravel
 
-  my-web1:
-    container_name: m-web1
-    image: nginx:latest
-    depends_on:
-      - my-laravel
-    ports:
-      - "8012:8010"
-    links:
-      - my-laravel
+  laravel:
+    container_name: app
+    #build: .
+    #image: custom-laravel
+    image: bitnami/php-fpm:latest
+    tty: true
     restart: always
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    networks:
-      laravel:
-        ipv4_address: 172.40.0.5
-
-  my-web2:
-    container_name: m-web2
-    image: nginx:latest
-    depends_on:
-      - my-laravel
+      - ./laravel-project/public:/app
     ports:
-      - "8011:8010"
-    links:
-      - my-laravel
-    restart: always
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - 9000:9000
     networks:
-      laravel:
-        ipv4_address: 172.40.0.4
+      - laravel
+    #command: ["php-fpm"]
 
-  my-web3:
-    container_name: m-web3
-    image: nginx:latest
-    depends_on:
-      - my-laravel
-    ports:
-      - "8010:8010"
-    links:
-      - my-laravel
-    restart: always
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    networks:
-      laravel:
-        ipv4_address: 172.40.0.3
-
-  proxy:
-    container_name: m-proxy
+  nginx:
+    container_name: proxy
     image: nginx:latest
     ports:
-      - "80:80"
-      - "443:443"
-    links:
-      - my-web1
-      - my-web2
-      - my-web3
+      #- HOST MACHINE PORT : CONTAINER PORT
+      - 80:80
+      - 443:443
     restart: always
     volumes:
-      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+      - ./proxy/single.conf:/etc/nginx/nginx.conf
     networks:
-      laravel:
-        ipv4_address: 172.40.0.2
+      - laravel
 
 networks:
   laravel:
