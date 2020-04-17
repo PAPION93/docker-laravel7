@@ -1,16 +1,17 @@
 # Docker를 이용한 Laravel 개발환경 구축
 
-## Docker
+# Docker
 
-> 로드밸런싱  
-> `docker-compose scale db=1 laravel=3 nginx=1`
+> 로드밸런싱
 
-## LOCUST 스트레스 테스트
+`docker-compose scale db=1 laravel=3 nginx=1`
+
+# LOCUST 스트레스 테스트
 
 [참고 자료](https://bcho.tistory.com/1369)  
 `locust -f .\locustfile.py --port 8080`
 
-## Laravel
+# Laravel
 
 ### env 환경설정
 
