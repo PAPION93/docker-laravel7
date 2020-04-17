@@ -29,14 +29,14 @@ services:
         #      - laravel
 
   laravel:
-    container_name: app
+    # container_name: app
     #build: .
     #image: custom-laravel
     image: bitnami/php-fpm:latest
     tty: true
     restart: always
     volumes:
-      - ./laravel-project/public:/app
+      - ./laravel-project:/var/www/html
     ports:
       - 9000:9000
     networks:
@@ -48,14 +48,14 @@ services:
     image: nginx:latest
     ports:
       #- HOST MACHINE PORT : CONTAINER PORT
-      - 80:80
+      - 81:80
       - 443:443
     restart: always
     volumes:
       - ./proxy/single.conf:/etc/nginx/nginx.conf
     networks:
       - laravel
-
+  
 networks:
   laravel:
     external: true
