@@ -19,9 +19,10 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id = null)
     {
-        $articles = \App\Article::with('comments', 'author', 'tags')->latest()->paginate(10);
+        $query = $id ? \App\Tag::find($id)->articles() : new \App\Article;
+        $articles = $query->with('comments', 'author', 'tags')->latest()->paginate(10);
 
         return view('articles.index', compact('articles'));
     }
@@ -41,13 +42,16 @@ class ArticlesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\ArticlesRequest  $request
+     * @param App\Http\Requests\ArticlesRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(ArticlesRequest $request)
     {
-        $article = \App\Article::create($request->all());
-
+        $payload = array_merge($request->except('_token'), [
+            'notification' => $request->has('notification')
+        ]);
+        $article = $request->user()->articles()->create($payload);
+        $article->tags()->sync($request->input('tags'));
         flash()->success(trans('forum.created'));
 
         return redirect(route('articles.index'));
@@ -57,7 +61,7 @@ class ArticlesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -70,7 +74,7 @@ class ArticlesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -83,24 +87,28 @@ class ArticlesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  App\Http\Requests\ArticlesRequest  $request
-     * @param  int  $id
+     * @param App\Http\Requests\ArticlesRequest $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(ArticlesRequest $request, $id)
     {
+        $payload = array_merge($request->except('_token'), [
+            'notification' => $request->has('notification')
+        ]);
+
         $article = \App\Article::findOrFail($id);
-        $article->update($request->except('_token', '_method'));
+        $article->update($payload);
+        $article->tags()->sync($request->input('tags'));
         flash()->success(trans('forum.updated'));
 
         return redirect(route('articles.index'));
-
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

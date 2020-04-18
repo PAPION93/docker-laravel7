@@ -1,49 +1,49 @@
 version: "3.7"
 
 services:
-    db:
-        container_name: db
-        build: ./mariadb
-        image: custom-mariadb
-        restart: always
-        environment:
-            - TZ=Asia/Seoul
-            - MYSQL_ROOT_PASSWROD=secret
-            - MYSQL_DATABASE=LARAVELDB
-            - MYSQL_USER=laravel
-            - MYSQL_PASSWORD=secret
-        ports:
-            - 3306:3306
-        volumes:
-            - ./mariadb/data:/var/lib/mysql
-            #- ./mariadb/conf:/etc/mysql
-            #- ./mariadb/log:/var/log/mysql
-        networks:
-            - laravel
+  db:
+    container_name: db
+    build: ./mariadb
+    image: custom-mariadb
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_ROOT_PASSWROD=secret
+      - MYSQL_DATABASE=LARAVELDB
+      - MYSQL_USER=laravel
+      - MYSQL_PASSWORD=secret
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mariadb/data:/var/lib/mysql
+      #- ./mariadb/conf:/etc/mysql
+      #- ./mariadb/log:/var/log/mysql
+    networks:
+      - laravel
 
-    laravel:
-        # container_name: app
-        build: .
-        image: custom-laravel
-        restart: always
-        volumes:
-            - ./laravel-project:/var/www/html
-        networks:
-            - laravel
+  laravel:
+    # container_name: app
+    build: .
+    image: custom-laravel
+    restart: always
+    volumes:
+      - ./laravel-project:/var/www/html
+    networks:
+      - laravel
 
-    nginx:
-        container_name: proxy
-        image: nginx:latest
-        ports:
-            - 80:80
-            - 443:443
-        restart: always
-        volumes:
-            - ./laravel-project:/var/www/html
-            - ./proxy/single.conf:/etc/nginx/nginx.conf
-        networks:
-            - laravel
+  nginx:
+    container_name: proxy
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - ./laravel-project:/var/www/html
+      - ./proxy/single.conf:/etc/nginx/nginx.conf
+    networks:
+      - laravel
 
 networks:
-    laravel:
-        external: true
+  laravel:
+    external: true

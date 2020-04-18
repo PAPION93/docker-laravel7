@@ -4,9 +4,9 @@ FROM php:7.4.3-fpm-alpine3.11 AS custom-laravel
 # step 2
 WORKDIR /root
 
-RUN apk update \
-        && apk add -u vim procps tzdata bash curl zip git zlib-dev libzip-dev icu-dev \
-        && rm -rf /var/cache/apk/*
+RUN apk update && \
+        apk add -u vim procps tzdata bash curl zip git zlib-dev libzip-dev icu-dev && \
+        rm -rf /var/cache/apk/*
 
 RUN cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 RUN echo "Asia/Seoul" > /etc/timezone
@@ -23,7 +23,7 @@ RUN ["/bin/bash", "-c", "source ~/.bashrc"]
 RUN docker-php-ext-install opcache
 RUN docker-php-ext-install intl
 RUN docker-php-ext-install bcmath
-RUN docker-php-ext-install zip 
+RUN docker-php-ext-install zip
 RUN docker-php-ext-install pdo_mysql
 #RUN docker-php-ext-install opcache intl bcmath zip pdo_mysql
 #RUN docker-php-ext-install mbstring tokenizer xml ctype fileinfo json
@@ -46,12 +46,12 @@ RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini && \
 
 # step 6
 # download the Laravel installer using Composer
-RUN composer global require laravel/installer && \
-        # composer Speed faster
-        composer config -g repos.packagist composer https://packagist.jp && \
-        composer global require hirak/prestissimo && \
-        # permission
-        chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache/
+RUN composer global require laravel/installer
+# composer Speed faster
+RUN composer config -g repos.packagist composer https://packagist.jp
+RUN composer global require hirak/prestissimo
+# permission
+#RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache/
 
 # step 7
 # Bind Port
