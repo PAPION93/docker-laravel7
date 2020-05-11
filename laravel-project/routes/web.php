@@ -19,8 +19,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'ArticlesController@index')->name('home');
 
 Route::resource('posts', 'PostsController');
 Route::resource('posts.comments', 'PostCommentController');
+
+Route::get('tags/{id}/articles', [
+    'as' => 'tags.articles.index',
+    'uses' => 'ArticlesController@index'
+]);
 Route::resource('articles', 'ArticlesController');
+
