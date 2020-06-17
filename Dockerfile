@@ -5,7 +5,7 @@ FROM php:7.4.3-fpm-alpine3.11 AS custom-laravel
 WORKDIR /root
 
 RUN apk update && \
-    apk add -u vim procps tzdata bash curl zip git zlib-dev libzip-dev icu-dev postgresql-dev && \
+    apk add -u vim procps tzdata bash curl zip git zlib-dev libzip-dev icu-dev && \
     rm -rf /var/cache/apk/*
 
 RUN cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime
@@ -24,7 +24,7 @@ RUN docker-php-ext-install opcache
 RUN docker-php-ext-install intl
 RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install zip
-RUN docker-php-ext-install pdo_pgsql
+RUN docker-php-ext-install pdo_mysql
 
 # step 5
 # PHP Config
