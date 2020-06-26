@@ -1,5 +1,4 @@
-# Docker를 이용한 Laravel 개발환경 구축
-> 그리고 Laravel 학습
+# Docker Laravel Playground
 
 # Docker
 
@@ -14,10 +13,4 @@
 
 # Laravel
 
-### env 환경설정
-
--   APP_DEBUG : 운영환경에서는 false로 시스템정보 노출하지 않아야 한다.
--   'timezone' => 'Asia/Seoul'
--   'locale' => 'ko'
-
-### [artisan command](https://github.com/PAPION93/TIL/blob/master/Laravel/artisan_command.md)
+## [artisan command](https://github.com/PAPION93/TIL/blob/master/Laravel/artisan_command.md)
