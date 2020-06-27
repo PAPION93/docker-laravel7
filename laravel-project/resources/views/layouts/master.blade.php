@@ -31,6 +31,7 @@
 @include('layouts.partial.footer')
 
 <script src="/build/js/app.js"></script>
+
 @yield('script')
 </body>
 

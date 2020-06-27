@@ -14,3 +14,10 @@
 ## Laravel
 
 ### [artisan command](https://github.com/PAPION93/TIL/blob/master/Laravel/artisan_command.md)
+
+### Pusher 
+
+1. `composer require pusher/pusher-php-server "~4.0"`
+2. `php artisan make:event MyEvent`
+3. `npm install --save laravel-echo pusher-js`
+

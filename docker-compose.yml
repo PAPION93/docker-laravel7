@@ -2,27 +2,25 @@ version: "3.7"
 
 services:
   db:
-    container_name: db
+    container_name: db-prayground
     build: ./mariadb
     image: custom-mariadb
     restart: always
     environment:
       - TZ=Asia/Seoul
-      - MYSQL_ROOT_PASSWROD=secret
-      - MYSQL_DATABASE=LARAVELDB
-      - MYSQL_USER=laravel
-      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWROD=
+      - MYSQL_DATABASE=
+      - MYSQL_USER=
+      - MYSQL_PASSWORD=
     ports:
       - 3306:3306
     volumes:
       - ./mariadb/data:/var/lib/mysql
-      #- ./mariadb/conf:/etc/mysql
-      #- ./mariadb/log:/var/log/mysql
     networks:
       - laravel
 
   laravel:
-    # container_name: app
+    container_name: laravel-prayground
     build: .
     image: custom-laravel
     restart: always
@@ -32,17 +30,23 @@ services:
       - laravel
 
   nginx:
-    container_name: proxy
+    container_name: nginx-prayground
     image: nginx:latest
     ports:
-      - 80:80
-      - 443:443
+      - 10080:80
+      - 10443:443
     restart: always
     volumes:
       - ./laravel-project:/var/www/html
       - ./proxy/single.conf:/etc/nginx/nginx.conf
     networks:
       - laravel
+
+  redis:
+    container_name: redis-prayground
+    image: redis:alpine
+    ports:
+      - "6379:6379"
 
 networks:
   laravel:

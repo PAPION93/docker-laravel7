@@ -195,6 +195,21 @@ class Stringable
     }
 
     /**
+     * Split a string using a regular expression.
+     *
+     * @param  string  $pattern
+     * @param  int  $limit
+     * @param  int  $flags
+     * @return \Illuminate\Support\Collection
+     */
+    public function split($pattern, $limit = -1, $flags = 0)
+    {
+        $segments = preg_split($pattern, $this->value, $limit, $flags);
+
+        return ! empty($segments) ? collect($segments) : collect();
+    }
+
+    /**
      * Cap a string with a single instance of a given value.
      *
      * @param  string  $cap
@@ -233,7 +248,7 @@ class Stringable
      */
     public function isEmpty()
     {
-        return empty($this->value);
+        return $this->value === '';
     }
 
     /**
