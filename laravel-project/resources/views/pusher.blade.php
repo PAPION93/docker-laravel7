@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <head>
   <title>Pusher Test</title>
+  <script src="{{ mix('js/app.js') }}"></script>
+
   <script src="https://js.pusher.com/6.0/pusher.min.js"></script>
   <script>
+
+Echo.channel('my-channel') // 채널 이름
+  .listen('MyEvent', (e) => { // 이벤트 이름
+  console.log(e);
+});
+
 
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;

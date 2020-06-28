@@ -21,6 +21,15 @@ Auth::routes();
 
 Route::get('/home', 'ArticlesController@index')->name('home');
 
+Route::get('test', function () {
+    event(new App\Events\MyEvent('hello world'));
+    return "success";
+});
+
+Route::get('pusher', function () {
+    return view('pusher');
+});
+
 Route::resource('posts', 'PostsController');
 Route::resource('posts.comments', 'PostCommentController');
 
@@ -29,4 +38,3 @@ Route::get('tags/{id}/articles', [
     'uses' => 'ArticlesController@index'
 ]);
 Route::resource('articles', 'ArticlesController');
-

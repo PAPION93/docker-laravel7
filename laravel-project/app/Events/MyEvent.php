@@ -14,14 +14,11 @@ class MyEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $message;
+
+    public function __construct($message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -31,6 +28,11 @@ class MyEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return ['my-channel'];
+    }
+
+    public function broadcastAs()
+    {
+        return 'my-event';
     }
 }
