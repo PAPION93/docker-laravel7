@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Events\test;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,13 @@ Auth::routes();
 Route::get('/home', 'ArticlesController@index')->name('home');
 
 Route::get('test', function () {
-    event(new App\Events\MyEvent('hello world'));
+    // event(new App\Events\MyEvent('hello world'));
+    broadcast(new MyEvent);
+    return "success";
+});
+
+Route::get('/broadcast', function () {
+    broadcast(new \App\Events\test());
     return "success";
 });
 

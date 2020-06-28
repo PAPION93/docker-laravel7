@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Laravel</title>
 
         <!-- Fonts -->
@@ -97,4 +97,12 @@
             </div>
         </div>
     </body>
+    <script src="{{ asset('js/app.js')}}"></script>
+
+    <script>
+    Echo.channel('laravel_database_test') // 채널 이름
+        .listen('test', (e) => { // 이벤트 이름
+        console.log(e);
+    });
+    </script>
 </html>

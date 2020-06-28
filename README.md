@@ -2,8 +2,7 @@
 
 ## Docker
 
-> 로드밸런싱
-
+로드밸런싱
 `docker-compose scale db=1 laravel=3 nginx=1`
 
 ## LOCUST 스트레스 테스트
@@ -21,3 +20,4 @@
 2. `php artisan make:event MyEvent`
 3. `npm install --save laravel-echo pusher-js`
 
+### Redis

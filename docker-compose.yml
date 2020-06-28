@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   db:
-    container_name: db-prayground
+    container_name: db-playground
     build: ./mariadb
     image: custom-mariadb
     restart: always
@@ -20,7 +20,7 @@ services:
       - laravel
 
   laravel:
-    container_name: laravel-prayground
+    container_name: laravel-playground
     build: .
     image: custom-laravel
     restart: always
@@ -30,7 +30,7 @@ services:
       - laravel
 
   nginx:
-    container_name: nginx-prayground
+    container_name: nginx-playground
     image: nginx:latest
     ports:
       - 10080:80
@@ -43,7 +43,7 @@ services:
       - laravel
 
   redis:
-    container_name: redis-prayground
+    container_name: redis-playground
     image: redis:alpine
     ports:
       - "6379:6379"
