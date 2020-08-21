@@ -8,7 +8,11 @@ jobs:
   test-php:
     name: Test/Lint PHP
     runs-on: ubuntu-latest
-    working-directory: ./laravel-project
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./laravel-project
+
     steps:
     - uses: actions/checkout@v2
     - name: Setup PHP
