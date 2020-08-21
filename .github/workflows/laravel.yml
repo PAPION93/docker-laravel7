@@ -1,0 +1,28 @@
+name: CI-CD # Give your workflow a name
+
+on: push # Run the workflow for each push event (i.e commit)
+
+jobs:
+  test-php:
+      name: Test/Lint PHP
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - name: Setup PHP
+          uses: shivammathur/setup-php@v1
+          with:
+            php-version: 7.3 # Use your PHP version
+            extensions: mbstring, bcmath # Setup any required extensions for tests
+        - name: Composer install
+          run: composer install
+        - name: Run Tests
+          run: ./vendor/bin/phpunit
+
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    # Note that this needs both of the other steps to have completed successfully
+    needs: [test-php] 
+    steps:
+    - uses: actions/checkout@v2
+      # Deploy Code 
