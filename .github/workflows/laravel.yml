@@ -19,6 +19,7 @@ jobs:
 
         - name: Run Tests
           run: ./vendor/bin/phpunit
+          working-directory: ./laravel-project
 
   deploy:
     name: Deploy to Production
