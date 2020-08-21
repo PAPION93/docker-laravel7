@@ -11,8 +11,11 @@ jobs:
         - name: Setup PHP
           uses: shivammathur/setup-php@v1
           with:
-            php-version: 7.3 # Use your PHP version
+            php-version: 7.4.3 # Use your PHP version
             extensions: mbstring, bcmath # Setup any required extensions for tests
+
+        - name: Access Source directory
+          run: cd laravel-project
         - name: Composer install
           run: composer install
         - name: Run Tests
