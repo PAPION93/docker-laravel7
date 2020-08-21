@@ -4,14 +4,13 @@ services:
   db:
     container_name: db-playground
     build: ./mariadb
-    image: custom-mariadb
     restart: always
     environment:
       - TZ=Asia/Seoul
-      - MYSQL_ROOT_PASSWROD=
-      - MYSQL_DATABASE=
-      - MYSQL_USER=
-      - MYSQL_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=testdb
+      - MYSQL_USER=testuser
+      - MYSQL_PASSWORD=secret
     ports:
       - 3306:3306
     volumes:
@@ -22,7 +21,6 @@ services:
   laravel:
     container_name: laravel-playground
     build: .
-    image: custom-laravel
     restart: always
     volumes:
       - ./laravel-project:/var/www/html

@@ -41,18 +41,18 @@ RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini && \
     sed -i "s/pm.max_spare_servers = .*/pm.max_spare_servers = 96/" /usr/local/etc/php-fpm.d/www.conf && \
     sed -i "s/^;clear_env = no$/clear_env = no/" /usr/local/etc/php-fpm.d/www.conf
 
+COPY ./laravel-project /var/www/html
 WORKDIR /var/www/html
 
-# step 6
 # download the Laravel installer using Composer
-RUN composer global require laravel/installer
-# composer Speed faster
+ENV COMPOSER_ALLOW_SUPERUSER 1
+# RUN composer global require laravel/installer
 RUN composer config -g repos.packagist composer https://packagist.kr && \
     composer global require hirak/prestissimo && \
     composer global install --no-dev --no-scripts
 
 # permission
-# RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache/
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache/
 
 # step 7
 # Bind Port
